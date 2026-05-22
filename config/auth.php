@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Admin;
+use App\Models\Employee;
+use App\Models\Player;
 use App\Models\User;
 
 return [
@@ -17,7 +20,7 @@ return [
 
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'players'),
     ],
 
     /*
@@ -40,8 +43,17 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'players',// (اللاعبين) الحارس الافتراضي
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',//  الحارس الخاص بالمسؤولين 
+        ],
+        'employee' => [
+            'driver' => 'session',
+            'provider' => 'employees',//  الحارس الخاص بالموظفين
+        ],
+
     ],
 
     /*
@@ -62,9 +74,17 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'players' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            'model' => env('AUTH_MODEL', Player::class),// جدول الحارس الخاص باللاعبين
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_ADMIN_MODEL', Admin::class),// جدول الحارس الخاص بالمسؤولين
+        ],
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_EMPLOYEE_MODEL', Employee::class),// جدول الحارس الخاص بالموظفين
         ],
 
         // 'users' => [

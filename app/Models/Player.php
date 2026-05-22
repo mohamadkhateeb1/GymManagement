@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Player extends Model
+class Player extends Authenticatable
 {
+    use HasFactory, Notifiable;
     protected $fillable = [
         'name',
         'email',
@@ -33,4 +37,8 @@ class Player extends Model
     {
         return $this->hasMany(DietPlan::class, 'player_id');
     }
+    public function roles()
+{
+    return $this->morphToMany(Role::class, 'authorizable', 'role_user');
+}
 }
